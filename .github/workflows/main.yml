@@ -25,7 +25,9 @@ jobs:
     - name: Install Chrome Remote Desktop
       run: msiexec /i chromeremotedesktophost.msi /quiet
     - name: Assign Remote Permissions
-      run: cmd /c ""%PROGRAMFILES(X86)%\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="4/0AdLIrYfA1Zm5p0tkcuw1vNHPRBHPxzjmmRFYaX7RI2LOy4xO8V6Khif8dQeYFIOVPyO29A" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=%COMPUTERNAME%"
+      run: |
+        $command = '"%PROGRAMFILES(X86)%\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code=`"4/0AdLIrYfA1Zm5p0tkcuw1vNHPRBHPxzjmmRFYaX7RI2LOy4xO8V6Khif8dQeYFIOVPyO29A`" --redirect-url=`"https://remotedesktop.google.com/_/oauthredirect`" --name=`"%COMPUTERNAME%`"'
+        cmd /c $command
     - name: Create Tunnel and Keep-Alive
       run: |
         Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
