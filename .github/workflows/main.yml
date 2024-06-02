@@ -10,20 +10,27 @@ jobs:
     steps:
     - name: Download ngrok
       run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+
     - name: Extract ngrok
       run: Expand-Archive ngrok.zip -DestinationPath .\ngrok
+
     - name: Authenticate ngrok
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+
     - name: Enable Terminal Services
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+
     - name: Enable Firewall Rule
       run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
     - name: Enable User Authentication
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+
     - name: Set Password for runneradmin
       run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
     - name: Create Tunnel and Keep-Alive
       run: |
         Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
@@ -31,12 +38,22 @@ jobs:
         Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
         echo "Installing Chrome Remote Desktop Host"
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
+
+        # Ensure the expected file exists
+        $chromeRemoteDesktopPath = "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe"
+        if (-Not (Test-Path $chromeRemoteDesktopPath)) {
+          Write-Error "Chrome Remote Desktop Host executable not found at $chromeRemoteDesktopPath"
+          exit 1
+        }
+
         echo "Starting Chrome Remote Desktop Host"
-        Start-Process -NoNewWindow -FilePath "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME'
+        Start-Process -NoNewWindow -FilePath $chromeRemoteDesktopPath -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME'
         Start-Sleep -Seconds 10
+
         echo "Providing PIN"
         Set-Content -Path "C:\Users\runneradmin\pin.txt" -Value "123456"
-        Start-Process -NoNewWindow -FilePath "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME', '--pin=123456'
+        Start-Process -NoNewWindow -FilePath $chromeRemoteDesktopPath -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME', '--pin=123456'
+
         while ($true) {
           Start-Sleep -Seconds 300
           echo "Keep-Alive"
