@@ -42,7 +42,7 @@ jobs:
         # Start PowerShell script to launch Chrome Remote Desktop host
         Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYeAcRB9wewYx_aW08zTY8dp6P6ZaAizD_KAljkaqlGOmzkJ9RYpuKP2fBdVrlIg6w' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
         
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 5
         
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.SendKeys]::SendWait("123456")
@@ -55,6 +55,6 @@ jobs:
         
         while ($true) {
           Start-Sleep -Seconds 5
-          echo "Keep-Alive"
+          echo "started RDP"
           Start-Sleep -Seconds 5
         }
