@@ -63,5 +63,8 @@ jobs:
         while ($true) {
           Start-Sleep -Seconds 5
           echo "started RDP"
+          New-Item -Path . -Name 'test1' -ItemType 'Directory'
+          Start-Sleep -Seconds 20
+          Remove-Item -Path .\test1 -Recurse -Force
           Start-Sleep -Seconds 5
         }
