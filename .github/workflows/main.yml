@@ -49,6 +49,8 @@ jobs:
         Start-Sleep -Seconds 1
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
         Start-Sleep -Seconds 1
+        [System.Windows.Forms.SendKeys]::SendWait("123456")
+        Start-Sleep -Seconds 1
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
         
         while ($true) {
