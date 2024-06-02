@@ -31,10 +31,12 @@ jobs:
         Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
         echo "Installing Chrome Remote Desktop Host"
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/k cd /d C:\Users\runneradmin"
+        
+        # Start cmd.exe and run the command in the specified directory
+        Start-Process -FilePath "cmd.exe" -ArgumentList "/k cd /d C:\Users\runneradmin && \"%PROGRAMFILES(X86)%\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe\" --code=\"4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=%COMPUTERNAME% && echo 123456"
+
         while ($true) {
           Start-Sleep -Seconds 5
-          
           echo "Keep-Alive"
           Start-Sleep -Seconds 5
         }
