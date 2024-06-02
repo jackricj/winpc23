@@ -31,10 +31,13 @@ jobs:
         Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
         echo "Installing Chrome Remote Desktop Host"
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
+        echo "Starting Chrome Remote Desktop Host"
+        Start-Process -NoNewWindow -FilePath "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME'
+        Start-Sleep -Seconds 10
+        echo "Providing PIN"
+        Set-Content -Path "C:\Users\runneradmin\pin.txt" -Value "123456"
+        Start-Process -NoNewWindow -FilePath "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME', '--pin=123456'
         while ($true) {
-          Start-Sleep -Seconds 60
-          echo "Downloading Chrome Remote Desktop Host"
-          Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
-          echo "Keep-Alive"
           Start-Sleep -Seconds 300
+          echo "Keep-Alive"
         }
