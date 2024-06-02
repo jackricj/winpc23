@@ -1,51 +1,58 @@
 name: Cl
+
 on: [push, workflow_dispatch]
+
 jobs:
   build:
     runs-on: windows-latest
     timeout-minutes: 360  # Set this to the maximum allowed or desired value
-steps:
-- name: Download ngrok
-  run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-- name: Extract ngrok
-  run: Expand-Archive ngrok.zip -DestinationPath .\ngrok
-- name: Authenticate ngrok
-  run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-  env:
-    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-- name: Enable Terminal Services
-  run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
-- name: Enable Firewall Rule
-  run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-- name: Enable User Authentication
-  run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-- name: Set Password for runneradmin
-  run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
-- name: Create Tunnel and Keep-Alive
-  run: |
-    Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
-    echo "Downloading Chrome Remote Desktop Host"
-    Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
-    echo "Installing Chrome Remote Desktop Host"
-    Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
-    
-    # Start PowerShell script to launch Chrome Remote Desktop host
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
-    Start-Sleep -Seconds 5
-    
-    Add-Type -AssemblyName System.Windows.Forms
-    [System.Windows.Forms.SendKeys]::SendWait("123456")
-    start-Sleep -Seconds 3
-    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-    Start-Sleep -Seconds 2
-    [System.Windows.Forms.SendKeys]::SendWait("123456")
-    Start-Sleep -Seconds 2
-    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-    Start-Sleep -Seconds 2
-    
-    while ($true) {
-      Start-Sleep -Seconds 5
-      echo "Keep-Alive"
-      Start-Sleep -Seconds 5
-    }
 
+    steps:
+    - name: Download ngrok
+      run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+
+    - name: Extract ngrok
+      run: Expand-Archive ngrok.zip -DestinationPath .\ngrok
+
+    - name: Authenticate ngrok
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+
+    - name: Enable Terminal Services
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+
+    - name: Enable Firewall Rule
+      run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
+    - name: Enable User Authentication
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+
+    - name: Set Password for runneradmin
+      run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
+    - name: Create Tunnel and Keep-Alive
+      run: |
+        Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
+        echo "Downloading Chrome Remote Desktop Host"
+        Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
+        echo "Installing Chrome Remote Desktop Host"
+        Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
+        
+        # Start PowerShell script to launch Chrome Remote Desktop host
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
+        
+        Start-Sleep -Seconds 10
+        
+        Add-Type -AssemblyName System.Windows.Forms
+        [System.Windows.Forms.SendKeys]::SendWait("123456")
+        Start-Sleep -Seconds 1
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        Start-Sleep -Seconds 1
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        
+        while ($true) {
+          Start-Sleep -Seconds 5
+          echo "Keep-Alive"
+          Start-Sleep -Seconds 5
+        }
