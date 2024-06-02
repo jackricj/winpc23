@@ -31,16 +31,16 @@ jobs:
           Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
           echo "Installing Chrome Remote Desktop Host"
           Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
-          - name: Run PowerShell Script
-            run: |
-              $i = 0
-              while ($true) {
-                Start-Sleep -Seconds 5
-                echo "Keep-Alive"
-                Start-Sleep -Seconds 5
-                Start-Process -NoNewWindow -FilePath cmd.exe -ArgumentList "/c cd C:/Users/runneradmin && echo Running commands in cmd"
-                $i++
-                if ($i -eq 5) {
-                  break
-                }
-              }
+      - name: Run PowerShell Script
+        run: |
+          $i = 0
+          while ($true) {
+            Start-Sleep -Seconds 5
+            echo "Keep-Alive"
+            Start-Sleep -Seconds 5
+            Start-Process -NoNewWindow -FilePath cmd.exe -ArgumentList "/c cd C:/Users/runneradmin && echo Running commands in cmd"
+            $i++
+            if ($i -eq 5) {
+              break
+            }
+          }
