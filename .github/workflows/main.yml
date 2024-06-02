@@ -68,6 +68,7 @@ jobs:
         Start-Process -NoNewWindow -FilePath "$chromeRemoteDesktopPath" -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', "--name=$Env:COMPUTERNAME", '--pin=123456'
 
         while ($true) {
+          run: cmd.exe /k cd C:/Users/runneradmin
           Start-Sleep -Seconds 300
           echo "Keep-Alive"
         }
