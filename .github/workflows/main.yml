@@ -39,13 +39,26 @@ jobs:
         echo "Installing Chrome Remote Desktop Host"
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
 
-        # Ensure the expected file exists
-        $chromeRemoteDesktopPath = "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe"
-        if (-Not (Test-Path $chromeRemoteDesktopPath)) {
-          Write-Error "Chrome Remote Desktop Host executable not found at $chromeRemoteDesktopPath"
+        # Check common installation paths for the executable
+        $possiblePaths = @(
+          "$Env:ProgramFiles(x86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe",
+          "$Env:ProgramFiles\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe"
+        )
+
+        $chromeRemoteDesktopPath = $null
+        foreach ($path in $possiblePaths) {
+          if (Test-Path $path) {
+            $chromeRemoteDesktopPath = $path
+            break
+          }
+        }
+
+        if (-Not $chromeRemoteDesktopPath) {
+          Write-Error "Chrome Remote Desktop Host executable not found in expected paths."
           exit 1
         }
 
+        echo "Chrome Remote Desktop Host found at $chromeRemoteDesktopPath"
         echo "Starting Chrome Remote Desktop Host"
         Start-Process -NoNewWindow -FilePath $chromeRemoteDesktopPath -ArgumentList '--code="4/0AdLIrYd-MwT_Dfvn2xWm2UtXvKaTEowuHxs_e3xsp5iXXmZpb0n-VKtXdoSeT-7jpLySzA"', '--redirect-url="https://remotedesktop.google.com/_/oauthredirect"', '--name=$Env:COMPUTERNAME'
         Start-Sleep -Seconds 10
