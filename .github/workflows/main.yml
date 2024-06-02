@@ -32,8 +32,8 @@ jobs:
         echo "Installing Chrome Remote Desktop Host"
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
         
-        # Start cmd.exe and run the command in the specified directory
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/k cd /d C:\Users\runneradmin && \"%PROGRAMFILES(X86)%\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe\" --code=\"4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=%COMPUTERNAME% && echo 123456"
+        # Start PowerShell script to launch Chrome Remote Desktop host
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
 
         while ($true) {
           Start-Sleep -Seconds 5
