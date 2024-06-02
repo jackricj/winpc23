@@ -35,9 +35,9 @@ jobs:
             run: |
               $i = 0
               while ($true) {
-                Start-Sleep -Seconds 60
+                Start-Sleep -Seconds 5
                 echo "Keep-Alive"
-                Start-Sleep -Seconds 300
+                Start-Sleep -Seconds 5
                 Start-Process -NoNewWindow -FilePath cmd.exe -ArgumentList "/c cd C:/Users/runneradmin && echo Running commands in cmd"
                 $i++
                 if ($i -eq 5) {
