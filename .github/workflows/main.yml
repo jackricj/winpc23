@@ -10,20 +10,27 @@ jobs:
     steps:
     - name: Download ngrok
       run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+
     - name: Extract ngrok
       run: Expand-Archive ngrok.zip -DestinationPath .\ngrok
+
     - name: Authenticate ngrok
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+
     - name: Enable Terminal Services
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+
     - name: Enable Firewall Rule
       run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+
     - name: Enable User Authentication
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+
     - name: Set Password for runneradmin
       run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
     - name: Create Tunnel and Keep-Alive
       run: |
         Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
@@ -33,7 +40,26 @@ jobs:
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
         
         # Start PowerShell script to launch Chrome Remote Desktop host
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
+        $pin = "123456"
+        $pinScript = @"
+        param (
+            [string]`$pin
+        )
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '\`$Env:PROGRAMFILES(X86)\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYfmr64S4PM8BxBlYGOjHxj7ie8X60MS_tQgJUSNa8AyPF2lkao4Hr1KcNFPQF6X2Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=`$Env:COMPUTERNAME}"
+        Start-Sleep -Seconds 5
+        Add-Type -AssemblyName System.Windows.Forms
+        [System.Windows.Forms.SendKeys]::SendWait(`$pin)
+        Start-Sleep -Seconds 1
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+        Start-Sleep -Seconds 5
+        [System.Windows.Forms.SendKeys]::SendWait(`$pin)
+        Start-Sleep -Seconds 1
+        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+"@
+        $pinScriptPath = ".\EnterPin.ps1"
+        $pinScript | Set-Content -Path $pinScriptPath
+        
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File $pinScriptPath -pin $pin"
 
         while ($true) {
           Start-Sleep -Seconds 5
