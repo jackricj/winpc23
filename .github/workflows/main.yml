@@ -33,7 +33,7 @@ jobs:
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
         while ($true) {
           Start-Sleep -Seconds 5
-          Start-Process -FilePath "cmd.exe" -ArgumentList "/k cd /d C:\Users\runneradmin && echo Running commands in cmd && pause"
+          Start-Process -FilePath "cmd.exe" -ArgumentList "/k cd /d C:\Users\runneradmin"
           echo "Keep-Alive"
           Start-Sleep -Seconds 5
         }
