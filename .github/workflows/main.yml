@@ -40,7 +40,7 @@ jobs:
         Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
         
         # Start PowerShell script to launch Chrome Remote Desktop host
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYeAcRB9wewYx_aW08zTY8dp6P6ZaAizD_KAljkaqlGOmzkJ9RYpuKP2fBdVrlIg6w' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='4/0AdLIrYdpx6030PPVf-22f1H578Y_SN1Y343Yu2UBc87C6BpY-U9Aa9WD9qlsZxGOKjiu1Q' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
         
         Start-Sleep -Seconds 5
         
