@@ -27,12 +27,14 @@ jobs:
     - name: Create Tunnel and Keep-Alive
       run: |
         Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
+        echo "Downloading Chrome Remote Desktop Host"
+        Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
+        echo "Installing Chrome Remote Desktop Host"
+        Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
         while ($true) {
           Start-Sleep -Seconds 60
           echo "Downloading Chrome Remote Desktop Host"
           Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
-          echo "Installing Chrome Remote Desktop Host"
-          Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
           echo "Keep-Alive"
           Start-Sleep -Seconds 300
         }
