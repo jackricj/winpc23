@@ -40,8 +40,6 @@ jobs:
 
     - name: Create Tunnel and Keep-Alive
       run: |
-        .\ngrok\ngrok.exe tcp 3389
-
         echo "Downloading Chrome Remote Desktop Host"
         Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
         echo "Installing Chrome Remote Desktop Host"
@@ -60,6 +58,9 @@ jobs:
         [System.Windows.Forms.SendKeys]::SendWait("123456")
         Start-Sleep -Seconds 1
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+
+
+        .\ngrok\ngrok.exe tcp 3389
         
         while ($true) {
           Start-Sleep -Seconds 1200
