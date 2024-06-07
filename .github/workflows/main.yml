@@ -67,3 +67,5 @@ jobs:
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
+
+          for ($i = 0; $i -lt 144; $i++) { echo "Keep-Alive"; Start-Sleep -Seconds 600 }
