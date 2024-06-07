@@ -40,8 +40,7 @@ jobs:
 
     - name: Create Tunnel and Keep-Alive
       run: |
-        # Start ngrok in a background process
-        Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
+        .\ngrok\ngrok.exe tcp 3389
 
         echo "Downloading Chrome Remote Desktop Host"
         Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
