@@ -68,4 +68,4 @@ jobs:
           [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 
           Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
-          .\ngrok\ngrok.exe tcp 3389 & 
+          .\ngrok\ngrok.exe tcp 3389
