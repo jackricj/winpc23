@@ -38,6 +38,18 @@ jobs:
     - name: Set Password for runneradmin
       run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
+    - name: Create Keep-Alive Script
+      run: |
+          $keepAliveScript = @"
+          while ($true) {
+            # Connect to the remote session to keep it alive
+            mstsc /v:$Env:COMPUTERNAME
+            echo "Keep-Alive"
+            Start-Sleep -Seconds 300  # Sleep for 5 minutes
+          }
+          "@
+          New-Item -Path keepalive.ps1 -ItemType File -Value $keepAliveScript
+
     - name: Create Tunnel and Keep-Alive
       run: |
         echo "Downloading Chrome Remote Desktop Host"
@@ -60,8 +72,6 @@ jobs:
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 
 
-    
-
-        
-        .\ngrok\ngrok.exe tcp 3389
+  
+        Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389'
         Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1"
