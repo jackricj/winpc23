@@ -28,6 +28,7 @@ jobs:
         run: |
           $keepAliveScript = @"
           while ($true) {
+              ssh -R 80:localhost:3389 serveo.net &
               # Connect to the remote session to keep it alive
               mstsc /v:$Env:COMPUTERNAME
               echo "Keep-Alive"
@@ -68,4 +69,11 @@ jobs:
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
 
-          for ($i = 0; $i -lt 144; $i++) { echo "Keep-Alive"; Start-Sleep -Seconds 600 }
+          while ($true) {
+          echo "Keep-Alive"
+          if (!(Get-Job -Name Job1 -ErrorAction SilentlyContinue)) {
+              # If the SSH tunnel job isn't running, restart it
+              Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
+          }
+          Start-Sleep -Seconds 600 
+          }
