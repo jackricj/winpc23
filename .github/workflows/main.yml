@@ -62,5 +62,6 @@ jobs:
 
     
 
+        
+        .\ngrok\ngrok.exe tcp 3389 &
         Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1"
-        .\ngrok\ngrok.exe tcp 3389
