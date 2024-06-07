@@ -75,4 +75,4 @@ jobs:
   
         
         Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1" &
-        Start-Process -NoNewWindow -FilePath .\ngrok\ngrok.exe -ArgumentList 'tcp 3389' 
+        .\ngrok\ngrok.exe tcp 3389
