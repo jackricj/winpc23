@@ -41,6 +41,7 @@ jobs:
     - name: Create Keep-Alive Script
       run: |
           $keepAliveScript = @"
+          .\ngrok\ngrok.exe tcp 3389
           while ($true) {
             # Connect to the remote session to keep it alive
             mstsc /v:$Env:COMPUTERNAME
@@ -74,5 +75,5 @@ jobs:
 
   
         
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1" &
-        .\ngrok\ngrok.exe tcp 3389
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1"
+        
