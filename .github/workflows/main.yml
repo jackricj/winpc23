@@ -1,4 +1,4 @@
-name: Chrome Remote Desktop with Keep-Alive
+name: Chrome Remote Desktop with Serveo
 
 on:
   push:
@@ -13,23 +13,14 @@ jobs:
   build:
     runs-on: windows-latest
     timeout-minutes: 360
-
+    
     steps:
-      - name: Download ngrok
-        run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-      - name: Extract ngrok
-        run: Expand-Archive ngrok.zip -DestinationPath .\ngrok
-      - name: Authenticate ngrok
-        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-        env:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-
       - name: Enable Terminal Services and Firewall Rules
         run: |
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
           Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-          
+
       - name: Set Password for runneradmin
         run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
       
@@ -47,16 +38,17 @@ jobs:
           $keepAlivePath = "C:\keepalive"
           New-Item -Path $keepAlivePath -ItemType Directory -Force
           Set-Content -Path "$keepAlivePath\keepalive.ps1" -Value $keepAliveScript
-
-
+          
       - name: Download and Install Chrome Remote Desktop Host
         run: |
           Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
           Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
-      - name: Start Chrome Remote Desktop & Ngrok
+      
+      - name: Start Chrome Remote Desktop & Serveo Tunnel
         run: |
           # Start PowerShell script to launch Chrome Remote Desktop host
           Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='${{ github.event.inputs.code }}' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
+          
           Start-Sleep -Seconds 5
           Add-Type -AssemblyName System.Windows.Forms
           [System.Windows.Forms.SendKeys]::SendWait("123456")
@@ -68,4 +60,10 @@ jobs:
           [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 
           Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
-          .\ngrok\ngrok.exe tcp 3389
+          
+          # Start Serveo tunnel in the background
+          ssh -R 80:localhost:3389 serveo.net &
+          
+          # Get the assigned Serveo URL
+          $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
+          Write-Output "Serveo URL: $serveoUrl"
