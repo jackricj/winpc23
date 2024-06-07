@@ -49,7 +49,7 @@ jobs:
             Start-Sleep -Seconds 300  # Sleep for 5 minutes
           }
           "@
-          New-Item -Path keepalive.ps1 -ItemType File -Value $keepAliveScript
+          New-Item -Path C:\keepalive.ps1 -ItemType File -Value $keepAliveScript
 
     - name: Create Tunnel and Keep-Alive
       run: |
@@ -75,5 +75,5 @@ jobs:
 
   
         
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-File keepalive.ps1"
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive.ps1"
         
