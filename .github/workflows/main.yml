@@ -72,6 +72,7 @@ jobs:
 
       - name: Start Chrome
         run: |
+          Set-Location -Path "C:\"
           $chromePath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
           Start-Process -FilePath $chromePath
 
