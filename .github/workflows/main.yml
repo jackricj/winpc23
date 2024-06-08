@@ -36,7 +36,7 @@ jobs:
       
       - name: Download and install Android Studio
         run: |
-          Start-Job -ScriptBlock {
+          $androidStudioJob = Start-Job -ScriptBlock {
           Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
           Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
            } | Out-Null # Suppress output
@@ -83,7 +83,7 @@ jobs:
           while (!(Get-Job -State Completed)) {
             Start-Sleep -Seconds 10
           }
-          Receive-Job
+          Receive-Job -Name $androidStudioJob
           while ($true) {
           echo "Keep-Alive"
           if (!(Get-Job -Name Job1 -ErrorAction SilentlyContinue)) {
