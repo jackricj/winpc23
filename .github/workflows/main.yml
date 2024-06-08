@@ -77,13 +77,15 @@ jobs:
       
       - name: Start Serveo Tunnel
         run: |
-          while (!(Get-Job -State Completed)) {
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
           
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
+          
+          while (!(Get-Job -Name $androidStudioJob -State Completed)) {
+          
           Start-Sleep -Seconds 10
           }
           Receive-Job -Name $androidStudioJob
