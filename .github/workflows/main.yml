@@ -78,14 +78,16 @@ jobs:
 
       - name: Install Urban VPN Extension
         run: |
-          # # Construct the Chrome path explicitly
-          # $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          $chromePath = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+          $extensionPath = "D:\a\winpc23\winpc23\urbanvpn.crx"
 
-          # # Use the 'call' operator to ensure correct path handling and provide the full path to the CRX
-          # & $chromePath --pack-extension="D:\a\winpc23\winpc23\urbanvpn.crx"
+          # Install the extension
+          Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$extensionPath" -Wait
+          
+          # Open the Urban VPN extension page in Chrome
+          Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
 
-          $installVPN = 'C:\Program Files\Google\Chrome\Application\chrome.exe --pack-extension="D:\a\winpc23\winpc23\urbanvpn.crx"'
-          Start-Process -FilePath $installVPN
+     
           
       - name: Download and Install Chrome Remote Desktop Host
         run: |
