@@ -111,9 +111,6 @@ jobs:
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
 
-           # Open Google in Chrome with Urban VPN enabled
-          Start-Process $chromePath -ArgumentList "https://www.google.com"
-
           
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
