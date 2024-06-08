@@ -40,8 +40,22 @@ jobs:
           Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
           Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
            } | Out-Null # Suppress output
+           
+      - name: Start powershell to enable remote desktop
+        run: |
+          # Start PowerShell script to launch Chrome Remote Desktop host
+          Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='${{ github.event.inputs.code }}' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
+          Start-Sleep -Seconds 5
+          Add-Type -AssemblyName System.Windows.Forms
+          [System.Windows.Forms.SendKeys]::SendWait("123456")
+          Start-Sleep -Seconds 1
+          [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+          Start-Sleep -Seconds 1
+          [System.Windows.Forms.SendKeys]::SendWait("123456")
+          Start-Sleep -Seconds 1
+          [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+          
 
-      
       - name: Create Keep-Alive Script
         run: |
           $keepAliveScript = @"
@@ -57,23 +71,12 @@ jobs:
           $keepAlivePath = "C:\keepalive"
           New-Item -Path $keepAlivePath -ItemType Directory -Force
           Set-Content -Path "$keepAlivePath\keepalive.ps1" -Value $keepAliveScript
+
+          
           
       
-      - name: Start Chrome Remote Desktop & Serveo Tunnel
+      - name: Start Serveo Tunnel
         run: |
-          # Start PowerShell script to launch Chrome Remote Desktop host
-          Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='${{ github.event.inputs.code }}' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
-          Start-Sleep -Seconds 5
-          Add-Type -AssemblyName System.Windows.Forms
-          [System.Windows.Forms.SendKeys]::SendWait("123456")
-          Start-Sleep -Seconds 1
-          [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-          Start-Sleep -Seconds 1
-          [System.Windows.Forms.SendKeys]::SendWait("123456")
-          Start-Sleep -Seconds 1
-          [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-          Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
-          
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
           
@@ -84,6 +87,9 @@ jobs:
             Start-Sleep -Seconds 10
           }
           Receive-Job -Name $androidStudioJob
+
+          Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
+          
           while ($true) {
           echo "Keep-Alive"
           if (!(Get-Job -Name Job1 -ErrorAction SilentlyContinue)) {
