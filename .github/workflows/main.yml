@@ -70,11 +70,11 @@ jobs:
             Start-Process -FilePath ChromeSetup.exe -ArgumentList "/silent /install" -Wait
           }
 
-      - name: Start Chrome
-        run: |
-          Set-Location -Path "C:\"
-          $chromePath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-          Start-Process -FilePath $chromePath
+      # - name: Start Chrome
+      #   run: |
+      #     Set-Location -Path "C:\"
+      #     $chromePath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+      #     Start-Process -FilePath $chromePath
 
       # - name: Install Urban VPN Extension
       #   run: |
