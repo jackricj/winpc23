@@ -57,12 +57,24 @@ jobs:
           # Download the CRX file from the provided URL
           Invoke-WebRequest https://github.com/amizippe/winpc23/raw/main/urbanvpn.crx -OutFile urbanvpn.crx
 
+      - name: Verify Download
+        run: |
+            if (Test-Path "urbanvpn.crx") {
+              Write-Output "urbanvpn.crx downloaded successfully!"
+              echo "downloaded urban vpn"
+            } else {
+              Write-Error "Failed to download urbanvpn.crx"
+              echo "not downloaded urban vpn"
+              exit 1  # Optional: Fail the workflow if the file is not found
+            }
+
       - name: Install Urban VPN Extension
         run: |
-           # Construct the Chrome path explicitly
-            $chromePath = Join-Path 'C:\Program Files (x86)\Google\Chrome\Application' 'chrome.exe' 
-            # Use the 'call' operator to ensure correct path handling
-            & $chromePath --pack-extension="$PWD\urbanvpn.crx"
+         # Install the extension silently
+          $chromePath = '"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"' # Enclose in quotes
+          Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$PWD\urbanvpn.crx" -Wait # Remove backticks
+
+
 
 
       
