@@ -22,6 +22,12 @@ jobs:
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
       - name: Set Password for runneradmin
         run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
+      - name: open Chrome and open website
+        run: |
+            $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+            Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+
       
       - name: Create Keep-Alive Script
         run: |
