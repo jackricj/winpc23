@@ -27,6 +27,13 @@ jobs:
         run: |
             $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
             Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+      - name: Download Android Studio
+        run: |
+          Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
+
+      - name: Install Android Studio (Silent)
+        run: |
+          Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
 
       
       - name: Create Keep-Alive Script
