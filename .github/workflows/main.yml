@@ -66,14 +66,6 @@ jobs:
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
-
-	$chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-	Start-Process -FilePath $chromePath
-	
-	# Open the Urban VPN extension page in Chrome
-	Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
-	
-	
           while ($true) {
           echo "Keep-Alive"
           if (!(Get-Job -Name Job1 -ErrorAction SilentlyContinue)) {
