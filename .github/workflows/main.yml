@@ -48,8 +48,9 @@ jobs:
         run: |
           # Start PowerShell script to launch Chrome Remote Desktop host
           Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='${{ github.event.inputs.code }}' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
-          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-          Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+          # $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          # Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+
 
           
           Start-Sleep -Seconds 5
