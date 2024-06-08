@@ -61,6 +61,15 @@ jobs:
           $currentDirectory = Get-Location
           Write-Output "Current working directory: $currentDirectory"
 
+
+      - name: Download and Install Chrome Browser (if not installed)
+        run: |
+          if (!(Test-Path 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')) {
+            echo "installing chrome"
+            Invoke-WebRequest https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B5C96554B-A69D-5129-C73F-6C3035311776%7D%26lang%3Den%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe -OutFile ChromeSetup.exe
+            Start-Process -FilePath ChromeSetup.exe -ArgumentList "/silent /install" -Wait
+          }
+
       - name: Install Urban VPN Extension
         run: |
           # Construct the Chrome path explicitly
@@ -74,23 +83,9 @@ jobs:
           Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
           Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
 
-      - name: Download and Install Chrome Browser (if not installed)
-        run: |
-          if (!(Test-Path 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')) {
-            Invoke-WebRequest https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B5C96554B-A69D-5129-C73F-6C3035311776%7D%26lang%3Den%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe -OutFile ChromeSetup.exe
-            Start-Process -FilePath ChromeSetup.exe -ArgumentList "/silent /install" -Wait
-          }
       
-
-
-      - name: Install Urban VPN Extension
-        run: |
-         # Install the extension silently
-          $chromePath = '"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"' # Enclose in quotes
-          Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$PWD\urbanvpn.crx" -Wait # Remove backticks
-
-
-
+      
+    
 
       
       - name: Start Chrome Remote Desktop & Serveo Tunnel
