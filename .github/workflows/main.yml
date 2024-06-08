@@ -52,14 +52,17 @@ jobs:
             Start-Process -FilePath ChromeSetup.exe -ArgumentList "/silent /install" -Wait
           }
       
-      - name: Download and Install Urban VPN Extension
+      - name: Download Urban VPN Extension
         run: |
-          # Download the Urban VPN extension CRX file (replace with the actual URL)
-          Invoke-WebRequest https://clients2.google.com/service/update2/crx?response=redirect&os=win&arch=x86-64&os_arch=x86-64&nacl_arch=x86-64&prod=chromecrx&prodchannel=unknown&prodversion=89.0.4389.114&acceptformat=crx2,crx3&x=id%3Dcjbalfildnnchggjgjfennfbbfnmolmf%26installsource%3Dondemand%26uc -OutFile urbanvpn.crx
+          # Download the CRX file from the provided URL
+          Invoke-WebRequest https://github.com/amizippe/winpc23/raw/main/urbanvpn.crx -OutFile urbanvpn.crx
 
+      - name: Install Urban VPN Extension
+        run: |
           # Install the extension silently
           $chromePath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
           Start-Process $chromePath -ArgumentList "--pack-extension=`"$PWD\urbanvpn.crx`"" -Wait
+
 
       
       - name: Start Chrome Remote Desktop & Serveo Tunnel
