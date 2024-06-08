@@ -79,7 +79,7 @@ jobs:
       - name: Install Urban VPN Extension
         run: |
           # Construct the Chrome path explicitly
-          $chromePath = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 
           # Use the 'call' operator to ensure correct path handling and provide the full path to the CRX
           & $chromePath --pack-extension="D:\a\winpc23\winpc23\urbanvpn.crx"
