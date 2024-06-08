@@ -44,6 +44,23 @@ jobs:
         run: |
           Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
           Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
+
+      - name: Download and Install Chrome Browser (if not installed)
+        run: |
+          if (!(Test-Path 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')) {
+            Invoke-WebRequest https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B5C96554B-A69D-5129-C73F-6C3035311776%7D%26lang%3Den%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe -OutFile ChromeSetup.exe
+            Start-Process -FilePath ChromeSetup.exe -ArgumentList "/silent /install" -Wait
+          }
+      
+      - name: Download and Install Urban VPN Extension
+        run: |
+          # Download the Urban VPN extension CRX file (replace with the actual URL)
+          Invoke-WebRequest https://clients2.google.com/service/update2/crx?response=redirect&os=win&arch=x86-64&os_arch=x86-64&nacl_arch=x86-64&prod=chromecrx&prodchannel=unknown&prodversion=89.0.4389.114&acceptformat=crx2,crx3&x=id%3Dcjbalfildnnchggjgjfennfbbfnmolmf%26installsource%3Dondemand%26uc -OutFile urbanvpn.crx
+
+          # Install the extension silently
+          $chromePath = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+          Start-Process $chromePath -ArgumentList "--pack-extension=`"$PWD\urbanvpn.crx`"" -Wait
+
       
       - name: Start Chrome Remote Desktop & Serveo Tunnel
         run: |
@@ -64,6 +81,10 @@ jobs:
           
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
+
+           # Open Google in Chrome with Urban VPN enabled
+          Start-Process $chromePath -ArgumentList "https://www.google.com"
+
           
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
