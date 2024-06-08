@@ -77,18 +77,18 @@ jobs:
       
       - name: Start Serveo Tunnel
         run: |
+          while (!(Get-Job -State Completed)) {
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
           
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
-          while (!(Get-Job -State Completed)) {
-            Start-Sleep -Seconds 10
+          Start-Sleep -Seconds 10
           }
           Receive-Job -Name $androidStudioJob
 
-          Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
+          # Start-Process -FilePath "powershell.exe" -ArgumentList "-File C:\keepalive\keepalive.ps1" -NoNewWindow
           
           while ($true) {
           echo "Keep-Alive"
