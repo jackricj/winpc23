@@ -76,16 +76,16 @@ jobs:
           $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
           Start-Process -FilePath $chromePath
 
-      - name: Install Urban VPN Extension
-        run: |
-          $chromePath = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
-          $extensionPath = "D:\a\winpc23\winpc23\urbanvpn.crx"
+      # - name: Install Urban VPN Extension
+      #   run: |
+      #     $chromePath = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+      #     $extensionPath = "D:\a\winpc23\winpc23\urbanvpn.crx"
 
-          # Install the extension
-          Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$extensionPath" -Wait
+      #     # Install the extension
+      #     Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$extensionPath" -Wait
           
-          # Open the Urban VPN extension page in Chrome
-          Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+      #     # Open the Urban VPN extension page in Chrome
+      #     Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
 
      
           
