@@ -33,13 +33,7 @@ jobs:
         run: |
             $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
             Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
-      
-      - name: Download and install Android Studio
-        run: |
-          $androidStudioJob = Start-Job -ScriptBlock {
-          Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
-          Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
-           } | Out-Null # Suppress output
+    
            
       - name: Start powershell to enable remote desktop
         run: |
@@ -77,6 +71,10 @@ jobs:
       
       - name: Start Serveo Tunnel
         run: |
+          $androidStudioJob = Start-Job -ScriptBlock {
+          Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
+          Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
+           } | Out-Null # Suppress output
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
           
