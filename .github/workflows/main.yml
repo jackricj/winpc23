@@ -59,10 +59,10 @@ jobs:
 
       - name: Install Urban VPN Extension
         run: |
-          # Install the extension silently
-          $chromePath = '"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"' # Enclose in quotes
-          Start-Process -FilePath $chromePath -ArgumentList "--pack-extension=$PWD\urbanvpn.crx" -Wait # Remove backticks
-
+           # Construct the Chrome path explicitly
+            $chromePath = Join-Path 'C:\Program Files (x86)\Google\Chrome\Application' 'chrome.exe' 
+            # Use the 'call' operator to ensure correct path handling
+            & $chromePath --pack-extension="$PWD\urbanvpn.crx"
 
 
       
