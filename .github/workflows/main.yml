@@ -23,17 +23,23 @@ jobs:
       - name: Set Password for runneradmin
         run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
+      - name: Download and Install Chrome Remote Desktop Host
+        run: |
+          Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
+          Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
+      
+
       - name: open Chrome and open website
         run: |
             $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
             Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
-      - name: Download Android Studio
+      
+      - name: Download and install Android Studio
         run: |
+          Start-Job -ScriptBlock {
           Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
-
-      - name: Install Android Studio (Silent)
-        run: |
           Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
+           } | Out-Null # Suppress output
 
       
       - name: Create Keep-Alive Script
@@ -52,20 +58,11 @@ jobs:
           New-Item -Path $keepAlivePath -ItemType Directory -Force
           Set-Content -Path "$keepAlivePath\keepalive.ps1" -Value $keepAliveScript
           
-      - name: Download and Install Chrome Remote Desktop Host
-        run: |
-          Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
-          Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
       
       - name: Start Chrome Remote Desktop & Serveo Tunnel
         run: |
           # Start PowerShell script to launch Chrome Remote Desktop host
           Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='${{ github.event.inputs.code }}' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
-          # $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-          # Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
-
-
-          
           Start-Sleep -Seconds 5
           Add-Type -AssemblyName System.Windows.Forms
           [System.Windows.Forms.SendKeys]::SendWait("123456")
@@ -83,6 +80,10 @@ jobs:
           # Get the assigned Serveo URL
           $serveoUrl = (ssh -R 80:localhost:3389 serveo.net 2>&1 | Select-String -Pattern "https://.*").Matches.Value
           Write-Output "Serveo URL: $serveoUrl"
+          while (!(Get-Job -State Completed)) {
+            Start-Sleep -Seconds 10
+          }
+          Receive-Job
           while ($true) {
           echo "Keep-Alive"
           if (!(Get-Job -Name Job1 -ErrorAction SilentlyContinue)) {
