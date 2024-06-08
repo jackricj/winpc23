@@ -25,7 +25,7 @@ jobs:
 
 
       - name: Rename Computer to nono1321
-        run: Rename-Computer -NewName "nono1321" -Restart
+        run: Rename-Computer -NewName "nono1321"
         
       - name: Download and Install Chrome Remote Desktop Host
         run: |
