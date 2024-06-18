@@ -24,8 +24,10 @@ jobs:
         run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
 
-      - name: Rename Computer to nono1321
-        run: Rename-Computer -NewName "nono1321"
+      - name: Rename Computer to any random number
+        run:  |
+              $randomNumber = Get-Random -Minimum 1 -Maximum 101
+               Rename-Computer -NewName ("Computer" + $randomNumber)
         
       - name: Download and Install Chrome Remote Desktop Host
         run: |
