@@ -27,7 +27,9 @@ jobs:
       - name: Rename Computer to any random number
         run:  |
               $randomNumber = Get-Random -Minimum 1 -Maximum 101
-               Rename-Computer -NewName ("Computer" + $randomNumber)
+              Rename-Computer -NewName ("Computer" + $randomNumber)
+        shell: pwsh
+        
         
       - name: Download and Install Chrome Remote Desktop Host
         run: |
@@ -38,7 +40,7 @@ jobs:
       - name: open Chrome and open website
         run: |
             $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-            Start-Process -FilePath $chromePath -ArgumentList "https://chromewebstore.google.com/detail/eppiocemhmnlbhjplcgkofciiegomcon"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/ilakFY8T"
     
            
       - name: Start powershell to enable remote desktop
