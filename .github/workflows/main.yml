@@ -78,10 +78,18 @@ jobs:
            $urls = @(
             "https://cuty.io/ilakFY8T",
             "https://cuty.io/wZG8Pu",
-            "https://cuty.io/DOLU",
-            "https://cuty.io/qRZLqGq75wq"
-            "https://cuty.io/Ajn0"
-            "https://cuty.io/QfDl99fl569"
+            "https://cuty.io/ksGiS",
+            "https://cuty.io/bukFkKh6QM3",
+            "https://cuty.io/v39UQ1LN",
+            "https://cuty.io/8brjE1ot",
+            "https://cuty.io/dyNG2wDO",
+            "https://cuty.io/DJsIPLT8ZD",
+            "https://cuty.io/pjtw18c4LjIE",
+            "https://cuty.io/zDJpsuufs",
+            "https://cuty.io/STksDnj",
+            "https://cuty.io/X2JDC",
+            "https://cuty.io/1Qno7h3p6uf4"
+
 
             )
             Start-Process -FilePath $chromePath -ArgumentList $urls -NoNewWindow
