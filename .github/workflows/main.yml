@@ -37,16 +37,21 @@ jobs:
           Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
 
 
-      - name: Download and Run OpenLinks.exe
-        run: |
-          Invoke-WebRequest https://github.com/amizippe/winpc23/raw/main/OpenLinks.exe -OutFile OpenLinks.exe
-          Start-Process -FilePath .\OpenLinks.exe
 
       - name: open Chrome and open website
         run: |
             $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
             Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/ilakFY8T"
-    
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/wZG8Pu"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/DOLU"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/qRZLqGq75wq"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/Dnn0B5"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/HZbFQXRouK0D"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/QfDl99fl569"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/7igRsizi"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/214eRcig"
+            Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/Ajn0"
+                
            
       - name: Start powershell to enable remote desktop
         run: |
