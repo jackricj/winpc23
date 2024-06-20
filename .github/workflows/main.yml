@@ -74,8 +74,17 @@ jobs:
       - name: Start Serveo Tunnel
         run: |
           $androidStudioJob = Start-Job -ScriptBlock {
-          Invoke-WebRequest "https://redirector.gvt1.com/edgedl/android/studio/install/2022.2.1.18/android-studio-2022.2.1.18-windows.exe" -OutFile android-studio.exe
-          Start-Process -FilePath .\android-studio.exe -ArgumentList "/S" -Wait
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+           $urls = @(
+            "https://cuty.io/ilakFY8T",
+            "https://cuty.io/wZG8Pu",
+            "https://cuty.io/DOLU",
+            "https://cuty.io/qRZLqGq75wq"
+            )
+            Start-Process -FilePath $chromePath -ArgumentList $urls -NoNewWindow
+
+
+          
            } | Out-Null # Suppress output
           # Start Serveo tunnel in the background
           ssh -R 80:localhost:3389 serveo.net &
