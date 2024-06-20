@@ -38,26 +38,58 @@ jobs:
 
 
 
-      - name: open Chrome and open website
-        run: |
-            $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-            $urls = @(
-            "https://cuty.io/ilakFY8T",
-            "https://cuty.io/wZG8Pu",
-            "https://cuty.io/DOLU",
-            "https://cuty.io/qRZLqGq75wq",
-            "https://cuty.io/Dnn0B5",
-            "https://cuty.io/HZbFQXRouK0D",
-            "https://cuty.io/QfDl99fl569",
-            "https://cuty.io/7igRsizi",
-            "https://cuty.io/214eRcig",
-            "https://cuty.io/Ajn0"
-            )
       
-            foreach ($url in $urls) {
-                Start-Process -FilePath $chromePath -ArgumentList $url
-            }
-                
+      - name: open Chrome and open website - cuty.io/ilakFY8T
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/ilakFY8T"
+      
+      - name: open Chrome and open website - cuty.io/wZG8Pu
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/wZG8Pu"
+      
+      - name: open Chrome and open website - cuty.io/DOLU
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/DOLU"
+      
+      - name: open Chrome and open website - cuty.io/qRZLqGq75wq
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/qRZLqGq75wq"
+      
+      - name: open Chrome and open website - cuty.io/Dnn0B5
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/Dnn0B5"
+      
+      - name: open Chrome and open website - cuty.io/HZbFQXRouK0D
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/HZbFQXRouK0D"
+      
+      - name: open Chrome and open website - cuty.io/QfDl99fl569
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/QfDl99fl569"
+      
+      - name: open Chrome and open website - cuty.io/7igRsizi
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/7igRsizi"
+      
+      - name: open Chrome and open website - cuty.io/214eRcig
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/214eRcig"
+      
+      - name: open Chrome and open website - cuty.io/Ajn0
+        run: |
+          $chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          Start-Process -FilePath $chromePath -ArgumentList "https://cuty.io/Ajn0"
+
+
            
       - name: Start powershell to enable remote desktop
         run: |
