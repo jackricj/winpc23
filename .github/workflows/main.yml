@@ -79,7 +79,7 @@ jobs:
             "https://cuty.io/xklVyXIr",
             "https://cety.app/ilakFY8T",
             "https://cuty.io/l1Kokl6HGFS",
-            "https://cuty.io/k2hrHlfy",
+            "https://cuty.io/k2hrHlfy"
             )
             Start-Process -FilePath $chromePath -ArgumentList $urls -NoNewWindow
 
