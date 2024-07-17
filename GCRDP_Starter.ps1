@@ -1,6 +1,6 @@
 # Define variables
-$code = '4/0AcvDMrB-QlRxf60Dg7GbVx2gJtJMJu8lZ--vuR-BxhJJg2Kl4NUzY5Xxjkv64X9Jb0pPxw'
-$name = 'nono1321'
+$code = '4/0AcvDMrDYK1gOcBbgNgMSvkbVmiwQi6ul0k-lcGbxUdBqa1VE4ihERPosb-QjqqOFc7mNYg'
+$name = 'Kiara Laptop'
 
 # Download the Chrome Remote Desktop Host MSI
 Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
