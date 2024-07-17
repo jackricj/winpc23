@@ -1,13 +1,12 @@
 # Define variables
 $code = '4/0AcvDMrCt4ZjloY8PX6mOBnvO50eKGL7DCMf7tK36vIYo-I-QFAznKIwQYfuZ6E3ean0GmA'
-$name = 'Kiara Laptop'
 
 # Download the Chrome Remote Desktop Host MSI
 Invoke-WebRequest https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi -OutFile chromeremotedesktophost.msi
 Start-Process msiexec.exe -ArgumentList '/i chromeremotedesktophost.msi /quiet /norestart' -Wait
 
 # Start the Chrome Remote Desktop Host with the provided code and name
-Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='$code' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name='$name'}"
+Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command & {& '${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe' --code='$code' --redirect-url='https://remotedesktop.google.com/_/oauthredirect' --name=$Env:COMPUTERNAME}"
 
 # Wait for the process to start
 Start-Sleep -Seconds 5
