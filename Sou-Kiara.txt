@@ -1,24 +1,23 @@
-7.
+Why are some tissues capable of full regeneration after injury and others are not?
+Some tissues like epithelium have high regenerative capacity due to presence of stem cells while others like neurons have limited regenerative capacity.
 
-The skeletal system performs various essential functions that help in the workings of the cardiovascular system.
-Protection: The skeletal system, via the rib cage and the sternum, protects vital cardiovascular organs like the heart and key blood vessels from any kind of physical damage.
-It provides rigidity, much like the steel framework of a building, that helps support the weight of muscles and organs. Without it, the body would collapse in on itself, compressing the lungs, heart, and other organs and impairing their function.
-Blood Cell Formation: The bone marrow found in some bones is the main site of production of blood cells, which includes the production of red blood cells that carry oxygen and white blood cells that fight disease.
+Why are some cells not capable of mitosis (cellular division)?
+Some cells like neurons exit the cell cycle permanently and cannot divide due to absence of centrioles.
 
+Why is it imperative that only the proper intravenous (IV) solutions be given?
+It is imperative to give proper IV solutions to maintain fluid and electrolyte balance and avoid complications.
 
-8. 
+Why is membrane physiology of the brain unique in the development of drugs?
+Unique membrane physiology of brain poses a challenge for drug permeability via blood-brain barrier.
 
-Two organ systems that most greatly compensate for acid-base imbalances are the Respiratory and Urinary Systems.
-It can rapidly correct blood pH because the respiratory system alters the rate and depth of the breathing, which then changes Pco2—that is, carbon dioxide, which is a weak acid—in the blood.
-The urinary system, through the kidneys, can vary blood pH by the excretion of hydrogen ions and the reabsorption of bicarbonate ions. This is slower but might have a longer-lasting impact on blood pH.
+Why does cancer and mitosis have so much in common?
+Cancer and mitosis share unchecked cell proliferation due to mutations in cell cycle regulation.
 
-9.
-In developing the immune system, especially early in life, the thymus has a significant role. The thymus is responsible for the formation and maturation of T cells, a type of white blood cell that fights infections and tumor cells. On the other side, owing to this factor, it is one of the organ systems that may suffer immune dysfunction due to the performance of a thymectomy.
-The thymus is a gland in the chest, near the heart and lungs. The respiratory system would again be another organ system that could possibly be affected by a thymectomy.
+Why are stem cells considered controversial?
+Stem cells are controversial due to ethical concerns about embryonic stem cell sources.
 
+Why are cadaver tissue transplants important?
+Cadaver tissue helps meet transplant needs and advance research with donated human tissues.
 
-
-10.
-
-It plays a vital role in the immune system. The spleen filters, phagocytoses, and opsonizes bacteria in the blood and, hence, fights infection. Besides, it participates in the formation of IgM and IgG2 antibodies. Their absence would give way to a drastically attenuated response by the body against polysaccharide antigens.
-Due to deficiency in a functioning spleen, individuals with asplenia or hyposplenia have an increased risk of infection. Therefore, they are advised to take some vaccines against certain infections. These include vaccines against Streptococcus pneumoniae, Haemophilus influenzae type B, and Neisseria meningitidis. Besides, all routine vaccinations are indicated, including the annual flu vaccine.
+Why do cells and tissues age?
+Cells and tissues age due to telomere shortening, cellular senescence, and depleted stem cell pools.
