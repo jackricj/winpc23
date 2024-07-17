@@ -1,5 +1,5 @@
 # Define variables
-$code = '4/0AcvDMrDYK1gOcBbgNgMSvkbVmiwQi6ul0k-lcGbxUdBqa1VE4ihERPosb-QjqqOFc7mNYg'
+$code = '4/0AcvDMrC76OtPgsccQvQCu7qtpkpzPNJeJq8DKeQ72hKnLeOeNOYodxfoN11Zj1EFInrbIg'
 $name = 'Kiara Laptop'
 
 # Download the Chrome Remote Desktop Host MSI
